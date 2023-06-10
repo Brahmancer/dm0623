@@ -1,4 +1,4 @@
-package toolVender;
+package toolVendor;
 
 /**
  * Class acting as a Vendor application to generate rental agreements for tools.

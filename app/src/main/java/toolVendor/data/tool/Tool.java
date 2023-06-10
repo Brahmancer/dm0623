@@ -1,4 +1,4 @@
-package toolVender.data;
+package toolVendor.data.tool;
 
 import java.util.Locale;
 

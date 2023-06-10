@@ -1,6 +1,6 @@
-package toolVender.data.agreement;
+package toolVendor.data.agreement;
 
-import toolVender.data.tool.Tool;
+import toolVendor.data.tool.Tool;
 
 /**
  * Model for a rental agreement for tools
