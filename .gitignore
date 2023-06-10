@@ -9,3 +9,4 @@ build
 
 # Exclude files of the following type
 *.pdf
+*.class
