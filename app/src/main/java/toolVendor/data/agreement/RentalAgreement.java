@@ -13,6 +13,7 @@ public class RentalAgreement {
     private Tool theToolToRent = null;
     private int theRentalDayCount = 0;
     private String theCheckOutDateString = "";
+    // The discount rate is a whole number e.g. 20 == 20%
     private double theDiscountRate = 0.0;
     
     // Output members
@@ -46,13 +47,14 @@ public class RentalAgreement {
     {
         // Generate the end date and the chargable days
         theReturnDateString = CalendarUitlity.getEndDateString(theCheckOutDateString, theRentalDayCount);
-        theChargableDayCount = CalendarUitlity.getChargableDays(theCheckOutDateString, theRentalDayCount, theToolToRent)
+        theChargableDayCount = CalendarUitlity.getChargableDays(theCheckOutDateString, theRentalDayCount, theToolToRent);
 
         // Generate the initial price
         theInitialPrice = theChargableDayCount * theToolToRent.getDailyChargeRate();
 
-        // Calculate dollars off
-        theAmountOffFromDiscount = theInitialPrice * theDiscountRate;
+        // Calculate dollars off. 
+        // The Discount rate is a whole number so in order to get the actual percentage, divide by 100.
+        theAmountOffFromDiscount = theInitialPrice *  (theDiscountRate / 100.0);
 
         // Generate the total price
         theTotalPrice = theInitialPrice - theAmountOffFromDiscount;
