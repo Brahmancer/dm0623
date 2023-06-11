@@ -4,13 +4,27 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import toolVendor.data.tool.Tool;
 
 /**
  * Utility class to get some calendar/time specific data.
  */
-public class CalendarUitlity {
+public class CalendarUtility {
+
+    /**
+     * Generates a format friendly starting date string so that we can take an intial hit up front to save us grief later 
+     * 
+     * @param inputString: Input string 
+     * @return: Formatted date string as dd/MM/yy
+     */
+    public static String getStartDateString(String inputString){
+        DateTimeFormatter formatter = CalendarUtility.generateFormatterBasedonDateString(inputString);
+        LocalDate parsedDate = LocalDate.parse(inputString, formatter);
+        formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+        return parsedDate.format(formatter);
+    }
 
     /**
      * Returns an ending date from a start date and a day count
@@ -22,16 +36,14 @@ public class CalendarUitlity {
     public static String getEndDateString(String startDateString, int numberOfDaysFromStart) {
         String endDateString = "";
 
-        // Generate a DateTimeFormatter
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-
-        // Parse the start date as a local date.
+        // generate formatter then parse the date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
         LocalDate parsedStartDate = LocalDate.parse(startDateString, formatter);
 
         // Generate the end date
         LocalDate endDate = parsedStartDate.plusDays(numberOfDaysFromStart);
 
-        // Generate the end date string and return it
+        // Generate the end date string and return it        
         endDateString = endDate.format(formatter);
         return endDateString;
     }
@@ -49,7 +61,7 @@ public class CalendarUitlity {
         int chargableDayCount = 0;
 
         // Generate a DateTimeFormatter
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
 
         // Parse the start date as a local date.
         LocalDate parsedStartDate = LocalDate.parse(startDateString, formatter);
@@ -162,5 +174,111 @@ public class CalendarUitlity {
         }
         
         return false;
+    }
+
+    /**
+     * Helper function that allows some flexibility in generat
+     * @param dateString
+     * @return
+     */
+    public static DateTimeFormatter generateFormatterBasedonDateString(String dateString){
+        DateTimeFormatter formatter = null;
+        LocalDate testDateTime;
+
+        // Check for expected MM/dd/yy
+        try {
+            formatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+            testDateTime = LocalDate.parse(dateString, formatter);
+        }
+        catch (DateTimeParseException e)
+        {
+            formatter = null;
+        }
+
+        // Check for M/d/yy
+        if (formatter == null){
+            // Try a different pattern
+            try {
+                formatter = DateTimeFormatter.ofPattern("M/d/yy");
+                testDateTime = LocalDate.parse(dateString, formatter);
+            }
+            catch (DateTimeParseException e){
+                formatter = null;
+            }
+        }
+
+        // Check for MM/d/yy
+        if (formatter == null){
+            // Try a different pattern
+            try {
+                formatter = DateTimeFormatter.ofPattern("MM/d/yy");
+                testDateTime = LocalDate.parse(dateString, formatter);
+            }
+            catch (DateTimeParseException e){
+                formatter = null;
+            }
+        }
+        
+        // Check for M/dd/yy
+        if (formatter == null){
+            // Try a different pattern
+            try {
+                formatter = DateTimeFormatter.ofPattern("M/dd/yy");
+                testDateTime = LocalDate.parse(dateString, formatter);
+            }
+            catch (DateTimeParseException e){
+                formatter = null;
+            }
+        }
+
+        // Check for M/dd/yyyy
+        if (formatter == null){
+            // Try a different pattern
+            try {
+                formatter = DateTimeFormatter.ofPattern("M/dd/yyyy");
+                testDateTime = LocalDate.parse(dateString, formatter);
+            }
+            catch (DateTimeParseException e){
+                formatter = null;
+            }
+        }
+
+        // Check for M/d/yyyy
+        if (formatter == null){
+            // Try a different pattern
+            try {
+                formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+                testDateTime = LocalDate.parse(dateString, formatter);
+            }
+            catch (DateTimeParseException e){
+                formatter = null;
+            }
+        }
+
+        // Check for MM/d/yyyy
+        if (formatter == null){
+            // Try a different pattern
+            try {
+                formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
+                testDateTime = LocalDate.parse(dateString, formatter);
+            }
+            catch (DateTimeParseException e){
+                formatter = null;
+            }
+        }
+
+        // Check for MM/dd/yyyy
+        if (formatter == null){
+            // Try a different pattern
+            try {
+                formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                testDateTime = LocalDate.parse(dateString, formatter);
+            }
+            catch (DateTimeParseException e){
+                formatter = null;
+            }
+        }
+
+        return formatter;
     }
 }

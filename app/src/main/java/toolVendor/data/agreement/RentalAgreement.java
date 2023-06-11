@@ -1,7 +1,7 @@
 package toolVendor.data.agreement;
 
 import toolVendor.data.tool.Tool;
-import toolVendor.util.CalendarUitlity;
+import toolVendor.util.CalendarUtility;
 
 /**
  * Model for a rental agreement for tools
@@ -35,9 +35,11 @@ public class RentalAgreement {
     {
         // Set parameters
         theToolToRent = tool;
-        theCheckOutDateString = checkoutDateString;
         theRentalDayCount = rentalDayCount;
         theDiscountRate = discountRate;
+
+        // Put the input in a friendly format
+        theCheckOutDateString = CalendarUtility.getStartDateString(checkoutDateString);
     }
 
     /**
@@ -46,8 +48,8 @@ public class RentalAgreement {
     public void generateAgreement()
     {
         // Generate the end date and the chargable days
-        theReturnDateString = CalendarUitlity.getEndDateString(theCheckOutDateString, theRentalDayCount);
-        theChargableDayCount = CalendarUitlity.getChargableDays(theCheckOutDateString, theRentalDayCount, theToolToRent);
+        theReturnDateString = CalendarUtility.getEndDateString(theCheckOutDateString, theRentalDayCount);
+        theChargableDayCount = CalendarUtility.getChargableDays(theCheckOutDateString, theRentalDayCount, theToolToRent);
 
         // Generate the initial price
         theInitialPrice = theChargableDayCount * theToolToRent.getDailyChargeRate();
@@ -74,8 +76,8 @@ public class RentalAgreement {
     @Override
     public String toString(){
         String returnString = String.format(
-            "Tool Code: %s\nTool Type: %s\nTool Brand: %s\nRental days: %d\nCheck out date: %s\nDue date: %s\nDaily rental rate: %.2lf\nCharge Days: %d\n" + 
-            "Pre-discount charge: %.2lf\nDiscount percent: %.1lf\nAmount saved from discount: %.2lf\nTotal Cost: %.2lf",
+            "Tool Code: %s\nTool Type: %s\nTool Brand: %s\nRental days: %d\nCheck out date: %s\nDue date: %s\nDaily rental rate: %.2f\nCharge Days: %d\n" + 
+            "Pre-discount charge: %.2f\nDiscount percent: %.1f\nAmount saved from discount: %.2f\nTotal Cost: %.2f",
              theToolToRent.getToolCode(),
              theToolToRent.getToolTypeString(),
              theToolToRent.getToolBrandString(),

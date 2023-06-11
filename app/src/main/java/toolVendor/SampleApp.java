@@ -3,10 +3,35 @@
  */
 package toolVendor;
 
+import toolVendor.data.agreement.RentalAgreement;
+import toolVendor.exceptions.DiscountOutOfBoundsException;
+import toolVendor.exceptions.InvalidRentalDayException;
+
 public class SampleApp {   
 
     public static void main(String[] args) {
-        System.out.println(new SampleApp().getGreeting());
+        // Initial Test code to see if the basics work. 
+        ToolVendor toolVendor = new ToolVendor();
+        
+        // Try and generate a rental agreement
+        try {
+            // Genrate aggreement via checkout 
+            RentalAgreement rentalAgreement = toolVendor.checkoutTool("JAKR", "9/3/15", 5, 20.0);
+
+            // Print out reciept to the console.
+            System.out.println(rentalAgreement.toString());
+        } 
+        catch(InvalidRentalDayException e){
+            e.printStackTrace();
+        }
+        catch(DiscountOutOfBoundsException e){
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public String getGreeting() {
