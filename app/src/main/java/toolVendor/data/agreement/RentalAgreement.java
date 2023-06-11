@@ -7,27 +7,81 @@ import toolVendor.data.tool.Tool;
  */
 public class RentalAgreement {
     // Member variables
+    
+    // Input members
     private Tool theToolToRent = null;
     private int theRentalDayCount = 0;
-    // TODO: Unsure what to do with the date right now. 
-    private String theCheckOutDate = "";
+    private String theCheckOutDateString = "";
     private double theDiscountRate = 0.0;
     
+    // Output members
+    private int theChargableDayCount = 0;
+    private double theInitialPrice = 0.0;
+    private String theReturnDateString = "";
+    private double theAmountOffFromDiscount = 0.0;
+    private double theTotalPrice = 0.0;
+    
+    /**
+     * Constructor
+     * 
+     * @param tool: Tool to rent out 
+     * @param checkoutDateString: A string representation of the checkout out date
+     * @param rentalDayCount: The # of days the tool is being rented. 
+     * @param discountRate: Rate of discount on the tool. 
+     */
+    public RentalAgreement(Tool tool, String checkoutDateString, int rentalDayCount, double discountRate)
+    {
+        // Set parameters
+        theToolToRent = tool;
+        theCheckOutDateString = checkoutDateString;
+        theRentalDayCount = rentalDayCount;
+        theDiscountRate = discountRate;
+    }
+
+    /**
+     * Generates a rental agreement. 
+     */
+    public void generateAgreement()
+    {
+        // Generate the initial price
+        theInitialPrice = theChargableDayCount * theToolToRent.getDailyChargeRate();
+
+        // Calculate dollars off
+        theAmountOffFromDiscount = theInitialPrice * theDiscountRate;
+
+        // Generate the total price
+        theTotalPrice = theInitialPrice - theAmountOffFromDiscount;
+    }
+
     /**
      * Getters 
      */
     public Tool getTool() { return theToolToRent; }
     public int getRentalDayCount() { return theRentalDayCount; }
-    public String getCheckoutDate() { return theCheckOutDate; }
+    public String getCheckoutDateString() { return theCheckOutDateString; }
     public double getDiscountRate() { return theDiscountRate; }
 
-    /*
-    TODO: Need to have the toString() method format the RentalAgreement into something that looks like a contract/receipt.
+    /**
+     * Generates a string formatted to look like a reciept.
+     */
     @Override
     public String toString(){
-        String returnString = "";
+        String returnString = String.format(
+            "Tool Code: %s\nTool Type: %s\nTool Brand: %s\nRental days: %d\nCheck out date: %s\nDue date: %s\nDaily rental rate: %.2lf\nCharge Days: %d\n" + 
+            "Pre-discount charge: %.2lf\nDiscount percent: %.1lf\nAmount saved from discount: %.2lf\nTotal Cost: %.2lf",
+             theToolToRent.getToolCode(),
+             theToolToRent.getToolTypeString(),
+             theToolToRent.getToolBrandString(),
+             theRentalDayCount,
+             theCheckOutDateString,
+             theReturnDateString, 
+             theToolToRent.getDailyChargeRate(),
+             theChargableDayCount, 
+             theInitialPrice,
+             theDiscountRate,
+             theAmountOffFromDiscount,
+             theTotalPrice);
 
         return returnString;
     }
-     */
 }
