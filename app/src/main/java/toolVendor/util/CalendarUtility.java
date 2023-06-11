@@ -67,7 +67,7 @@ public class CalendarUtility {
         LocalDate parsedStartDate = LocalDate.parse(startDateString, formatter);
 
         // Start counting days
-        for (int i = 0; i < numberOfDaysFromStart; ++i) {
+        for (int i = 1; i <= numberOfDaysFromStart; ++i) {
             // Get the date to examine.
             LocalDate dateToExamine = parsedStartDate.plusDays(i);
 
@@ -86,13 +86,13 @@ public class CalendarUtility {
             DayOfWeek dayOfWeekForDate = dateToExamine.getDayOfWeek();
 
             // Check for weekend rate and if it's a weekend.
-            if (toolToRent.doWeekendRatesApply() && (dayOfWeekForDate == DayOfWeek.SATURDAY || dayOfWeekForDate == DayOfWeek.SATURDAY)) {
+            if (toolToRent.doWeekendRatesApply() && (dayOfWeekForDate == DayOfWeek.SATURDAY || dayOfWeekForDate == DayOfWeek.SATURDAY) && !isFourthOfJulyHoliday(dateToExamine)) {
                 chargableDayCount++;
                 continue;
             }
 
-            // If here, check for weekdays
-            if (toolToRent.doWeekdayRatesApply() && dayOfWeekForDate != DayOfWeek.SATURDAY && dayOfWeekForDate != DayOfWeek.SUNDAY) {
+            // If here, check for weekdays that aren't holidays.
+            if (toolToRent.doWeekdayRatesApply() && dayOfWeekForDate != DayOfWeek.SATURDAY && dayOfWeekForDate != DayOfWeek.SUNDAY && !isLaborDay(dateToExamine) && !isFourthOfJulyHoliday(dateToExamine)) {
                 // it's a chargable day
                 chargableDayCount++;
             }

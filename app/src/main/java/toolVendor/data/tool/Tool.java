@@ -10,32 +10,32 @@ public class Tool {
      * Member variables
      */
 
-    // Character code denoting the tool to checkout
+    // Character code denoting the tool to checkout 
     private String theToolCode = "";
 
     // Enumerations to check the Tool's type and brand
-    private ToolType theToolType = ToolType.NONE;
+    private ToolType theToolType = ToolType.NONE; 
     private ToolBrand theToolBrand = ToolBrand.NONE;
-
+    
     // The tool's charge rate in USD.
     private double theDailyChargeRate = 0.0;
 
     // Flags indicating when to apply the charge.
     // Set the weekday charge flag to true by default
-    // because all tools, at least for now, have a rate during the weekday.
+    // because all tools, at least for now, have a rate during the weekday. 
     private boolean theApplyWeekdayChargeFlag = true;
     private boolean theApplyWeekendChargeFlag = false;
     private boolean theApplyHolidayChargeFlag = false;
 
     /**
-     * Tool Constructor
+     * Tool Constructor 
      */
-    public Tool(String code) {
+    public Tool(String code) { 
 
         // Sanity check input
         if (code != null) {
             // Set the code
-            theToolCode = code.toUpperCase(Locale.getDefault());
+            theToolCode = code.toUpperCase(Locale.getDefault());    
         }
         // else leave the code as empty string.
 
@@ -53,7 +53,7 @@ public class Tool {
                 theToolBrand = ToolBrand.WERNER;
                 theDailyChargeRate = 1.99;
                 // Ladders currently charge on Weekdays and Weekends
-                theApplyWeekdayChargeFlag = true;
+                theApplyWeekendChargeFlag = true;
                 break;
             case "JAKD":
                 theToolType = ToolType.JACKHAMMER;
@@ -92,42 +92,23 @@ public class Tool {
     }
 
     /**
-     * Getter functions
+     * Getter functions 
      */
-    public String getToolCode() {
-        return theToolCode;
-    }
-
-    public ToolType getToolType() {
-        return theToolType;
-    }
-
-    public ToolBrand getToolBrand() {
-        return theToolBrand;
-    }
-
-    public double getDailyChargeRate() {
-        return theDailyChargeRate;
-    }
-
-    public boolean doWeekdayRatesApply() {
-        return theApplyWeekdayChargeFlag;
-    }
-
-    public boolean doWeekendRatesApply() {
-        return theApplyWeekendChargeFlag;
-    }
-
-    public boolean doHolidayRatesApply() {
-        return theApplyHolidayChargeFlag;
-    }
-
+    public String getToolCode() { return theToolCode; }
+    public ToolType getToolType() { return theToolType; }
+    public ToolBrand getToolBrand() { return theToolBrand; }
+    public double getDailyChargeRate() { return theDailyChargeRate; }
+    public boolean doWeekdayRatesApply() { return theApplyWeekdayChargeFlag; }
+    public boolean doWeekendRatesApply() { return theApplyWeekendChargeFlag; }
+    public boolean doHolidayRatesApply() { return theApplyHolidayChargeFlag; }
+    
     /**
      * Generates a string based on the tool type.
      * 
-     * @return: Returns the type of tool in the form of a string.
+     * @return: Returns the type of tool in the form of a string. 
      */
-    public String getToolTypeString() {
+    public String getToolTypeString() 
+    {
         switch (theToolType) {
             case LADDER:
                 return "Ladder";

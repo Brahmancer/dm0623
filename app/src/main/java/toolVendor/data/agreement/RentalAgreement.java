@@ -1,5 +1,7 @@
 package toolVendor.data.agreement;
 
+import java.math.BigDecimal;
+
 import toolVendor.data.tool.Tool;
 import toolVendor.util.CalendarUtility;
 
@@ -56,7 +58,7 @@ public class RentalAgreement {
 
         // Calculate dollars off. 
         // The Discount rate is a whole number so in order to get the actual percentage, divide by 100.
-        theAmountOffFromDiscount = theInitialPrice *  (theDiscountRate / 100.0);
+        theAmountOffFromDiscount = Math.round((theInitialPrice *  (theDiscountRate / 100.0))* 100) / 100.0;
 
         // Generate the total price
         theTotalPrice = theInitialPrice - theAmountOffFromDiscount;
@@ -75,22 +77,37 @@ public class RentalAgreement {
      */
     @Override
     public String toString(){
-        String returnString = String.format(
-            "Tool Code: %s\nTool Type: %s\nTool Brand: %s\nRental days: %d\nCheck out date: %s\nDue date: %s\nDaily rental rate: %.2f\nCharge Days: %d\n" + 
-            "Pre-discount charge: %.2f\nDiscount percent: %.1f\nAmount saved from discount: %.2f\nTotal Cost: %.2f",
-             theToolToRent.getToolCode(),
-             theToolToRent.getToolTypeString(),
-             theToolToRent.getToolBrandString(),
-             theRentalDayCount,
-             theCheckOutDateString,
-             theReturnDateString, 
-             theToolToRent.getDailyChargeRate(),
-             theChargableDayCount, 
-             theInitialPrice,
-             theDiscountRate,
-             theAmountOffFromDiscount,
-             theTotalPrice);
+        StringBuilder builder = new StringBuilder("");
+        String formatString = "";
 
-        return returnString;
+        // Tool code, type, and brand
+        builder.append("Tool Code: " + theToolToRent.getToolCode() + "\n");
+        builder.append("Tool Type: " + theToolToRent.getToolTypeString() + "\n");
+        builder.append("Tool Brand: " + theToolToRent.getToolBrandString() + "\n");
+        
+        // Checkout date, due date, and rental day count 
+        builder.append("Rental days: " + theRentalDayCount + "\n");
+        builder.append("Checkout date: " + theCheckOutDateString + "\n");
+        builder.append("Due date: " + theReturnDateString + "\n");
+        formatString = String.format("%.2f", theToolToRent.getDailyChargeRate());
+        builder.append("Daily rental rate: $" + formatString + "\n");
+        builder.append("Charge days: " + theChargableDayCount + "\n");        
+        
+        // The cost itemization
+
+        // Pre-discount cost
+        formatString = String.format("%.2f", theInitialPrice);
+        builder.append("Pre-discount cost: $" + formatString + "\n");
+        // Discount rate 
+        formatString = String.format("%.1f", theDiscountRate);
+        builder.append("Discount percent: " + formatString + "%\n");
+        // Money off from Discount 
+        formatString = String.format("%.2f", theAmountOffFromDiscount);
+        builder.append("Discount amount: $" + formatString + "\n");
+        // Total cost
+        formatString = String.format("%.2f", theTotalPrice);
+        builder.append("Final Charge: $" + formatString);
+
+        return builder.toString();
     }
 }

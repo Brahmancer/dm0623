@@ -59,9 +59,9 @@ public class ToolVendor {
             String errorString = String.format("Rental day count of %d is invalid. Please have at least one day for tool rental.", rentalDayCount);
             throw new InvalidRentalDayException(errorString);
         }
-        else if (discount < 0.0 && discount > 100.0)
+        else if (discount < 0.0 || discount > 100.0)
         {
-            String errorString = String.format("Discount of %lf is invalid. Please input a discount between 0 and 100 inclusively.", discount);
+            String errorString = String.format("Discount of %.1f is invalid. Please input a discount between 0 and 100 inclusively.", discount);
             throw new DiscountOutOfBoundsException(errorString);
         }
 

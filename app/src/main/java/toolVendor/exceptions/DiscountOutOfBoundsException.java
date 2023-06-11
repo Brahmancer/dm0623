@@ -1,6 +1,6 @@
 package toolVendor.exceptions;
 
-public class DiscountOutOfBoundsException extends Exception {
+public class DiscountOutOfBoundsException extends RuntimeException {
     public DiscountOutOfBoundsException(String errorMsgString){
         super(errorMsgString);
     }   
