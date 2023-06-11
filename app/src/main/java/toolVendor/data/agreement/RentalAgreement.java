@@ -1,6 +1,7 @@
 package toolVendor.data.agreement;
 
 import toolVendor.data.tool.Tool;
+import toolVendor.util.CalendarUitlity;
 
 /**
  * Model for a rental agreement for tools
@@ -43,6 +44,10 @@ public class RentalAgreement {
      */
     public void generateAgreement()
     {
+        // Generate the end date and the chargable days
+        theReturnDateString = CalendarUitlity.getEndDateString(theCheckOutDateString, theRentalDayCount);
+        theChargableDayCount = CalendarUitlity.getChargableDays(theCheckOutDateString, theRentalDayCount, theToolToRent)
+
         // Generate the initial price
         theInitialPrice = theChargableDayCount * theToolToRent.getDailyChargeRate();
 
