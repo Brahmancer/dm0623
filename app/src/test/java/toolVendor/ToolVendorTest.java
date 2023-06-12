@@ -189,7 +189,7 @@ class ToolVendorTest {
     }
     
     @Test
-    public void testChainSawHoliday(){
+    public void testChainSawFourthOfJulyHoliday(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("CHNS", "7/3/23", 4, 0);
 
         assertNotNull(testAgreement);
@@ -250,6 +250,28 @@ class ToolVendorTest {
                 "Discount percent: 15.0%\n" + //
                 "Discount amount: $1.79\n" + //
                 "Final Charge: $10.17";
+        String actualReceipt = testAgreement.toString();
+        assertTrue(actualReceipt.equals(expectedReceipt));
+    }
+
+    @Test
+    public void testChainSawLaborDay(){
+        RentalAgreement testAgreement = testToolVendor.checkoutTool("CHNS", "9/3/20", 7, 50);
+
+        assertNotNull(testAgreement);
+
+        String expectedReceipt = "Tool Code: CHNS\n" + //
+                "Tool Type: Chainsaw\n" + //
+                "Tool Brand: Stihl\n" + //
+                "Rental days: 7\n" + //
+                "Checkout date: 09/03/20\n" + //
+                "Due date: 09/10/20\n" + //
+                "Daily rental rate: $1.49\n" + //
+                "Charge days: 5\n" + //
+                "Pre-discount cost: $7.45\n" + //
+                "Discount percent: 50.0%\n" + //
+                "Discount amount: $3.73\n" + //
+                "Final Charge: $3.72";
         String actualReceipt = testAgreement.toString();
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
