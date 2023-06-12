@@ -29,9 +29,10 @@ public class CalendarUtility {
     /**
      * Returns an ending date from a start date and a day count
      * 
-     * @param startDateString
-     * @param numberOfDaysFromStart
-     * @return
+     * @param startDateString: Starting date string represntation
+     * @param numberOfDaysFromStart: The number of days ahead the end date lies
+     * 
+     * @return: A string representation of the end date that is n days ahead from the start date. 
      */
     public static String getEndDateString(String startDateString, int numberOfDaysFromStart) {
         String endDateString = "";
@@ -50,12 +51,16 @@ public class CalendarUtility {
 
     /**
      * Gets the # of chargable days based on the start day, # of days, and the tool
-     * being rented.
+     * being rented. Chargable days start the day after the specified start date and 
+     * go up to and include the date specified by start date + n days from start. 
      * 
-     * @param startDateString
-     * @param numberOfDaysFromStart
-     * @param toolToRent
-     * @return
+     * The Tool has rules on which days are chargable. 
+     * 
+     * @param startDateString: A string representation of the start date to rent
+     * @param numberOfDaysFromStart: The number of days to rent 
+     * @param toolToRent: A Tool object representing the tool to rent.
+     * 
+     * @return: The # of chargeable days for the input tool 
      */
     public static int getChargableDays(String startDateString, int numberOfDaysFromStart, Tool toolToRent) {
         int chargableDayCount = 0;
@@ -102,10 +107,15 @@ public class CalendarUtility {
     }
 
     /**
-     * Helper method to determine if the date counts as a 4th of July holiday.
+     * Helper method to determine if the date counts as a 4th of July holiday. 
+     * It's a 4th of July holiday when
+     *  - It's the 4th and it's not on a weekend.
+     *  - The 4th is on a Saturday and today is the 3rd.
+     *  - The 4th is on a Sunday and today is the 5th.
      * 
-     * @param dateToCheck
-     * @return
+     * @param dateToCheck: The date to check if it's a 4th of July holiday. 
+     * 
+     * @return: True if the date specified is a 4th of july holiday, false for otherwise.
      */
     private static boolean isFourthOfJulyHoliday(LocalDate dateToCheck) {
         if (dateToCheck != null) {
@@ -147,8 +157,11 @@ public class CalendarUtility {
     /**
      * Helper method to determine if the date counts as a Labor Day holiday.
      * 
-     * @param dateToCheck
-     * @return
+     * It's considered a labor day holiday if it's the first Monday of the month of September.
+     * 
+     * @param dateToCheck: date to verify if it's a Labord day holiday
+     * 
+     * @return: True if the date is a labor day holiday, false for otherwise.
      */
     private static boolean isLaborDay(LocalDate dateToCheck) {
         // Check for null 
@@ -177,9 +190,13 @@ public class CalendarUtility {
     }
 
     /**
-     * Helper function that allows some flexibility in generat
-     * @param dateString
-     * @return
+     * Helper function that allows some flexibility in generate some Date Fromatters
+     * 
+     * The output formatter will allow us to get a date then later convert back into a "dd/MM/yy" format
+     * 
+     * @param dateString: initial date string to generate a formatter for.
+     * 
+     * @return: A DateTimeFormatter for the initial date string.
      */
     public static DateTimeFormatter generateFormatterBasedonDateString(String dateString){
         DateTimeFormatter formatter = null;
