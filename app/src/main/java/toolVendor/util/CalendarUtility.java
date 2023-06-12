@@ -86,7 +86,7 @@ public class CalendarUtility {
             DayOfWeek dayOfWeekForDate = dateToExamine.getDayOfWeek();
 
             // Check for weekend rate and if it's a weekend.
-            if (toolToRent.doWeekendRatesApply() && (dayOfWeekForDate == DayOfWeek.SATURDAY || dayOfWeekForDate == DayOfWeek.SATURDAY) && !isFourthOfJulyHoliday(dateToExamine)) {
+            if (toolToRent.doWeekendRatesApply() && (dayOfWeekForDate == DayOfWeek.SATURDAY || dayOfWeekForDate == DayOfWeek.SUNDAY) && !isFourthOfJulyHoliday(dateToExamine)) {
                 chargableDayCount++;
                 continue;
             }

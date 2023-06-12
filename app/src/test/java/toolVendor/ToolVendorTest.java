@@ -4,8 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import toolVendor.data.agreement.RentalAgreement;
 import toolVendor.exceptions.DiscountOutOfBoundsException;
+import toolVendor.exceptions.InvalidRentalDayException;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.security.InvalidParameterException;
 
 import org.junit.jupiter.api.BeforeAll;
 
@@ -64,13 +67,12 @@ class ToolVendorTest {
                 "Checkout date: 07/02/20\n" + //
                 "Due date: 07/05/20\n" + //
                 "Daily rental rate: $1.99\n" + //
-                "Charge days: 1\n" + //
-                "Pre-discount cost: $1.99\n" + //
+                "Charge days: 2\n" + //
+                "Pre-discount cost: $3.98\n" + //
                 "Discount percent: 10.0%\n" + //
-                "Discount amount: $0.20\n" + //
-                "Final Charge: $1.79";
+                "Discount amount: $0.40\n" + //
+                "Final Charge: $3.58";
         String actualReceipt = testAgreement.toString();
-        System.out.println(actualReceipt);
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
@@ -93,7 +95,6 @@ class ToolVendorTest {
                 "Discount amount: $1.12\n" + //
                 "Final Charge: $3.35";
         String actualReceipt = testAgreement.toString();
-        System.out.println(actualReceipt);
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
@@ -116,7 +117,6 @@ class ToolVendorTest {
                 "Discount amount: $0.00\n" + //
                 "Final Charge: $8.97";
         String actualReceipt = testAgreement.toString();
-        System.out.println(actualReceipt);
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
@@ -161,7 +161,96 @@ class ToolVendorTest {
                 "Discount amount: $1.50\n" + //
                 "Final Charge: $1.49";
         String actualReceipt = testAgreement.toString();
-        System.out.println(actualReceipt);
+        assertTrue(actualReceipt.equals(expectedReceipt));
+    }
+
+    @Test
+    public void testInvalidRentalDayException() {
+        InvalidRentalDayException exception = assertThrows(InvalidRentalDayException.class, () ->{
+            testToolVendor.checkoutTool("JAKR", "9/3/15", -1, 10);
+        });
+
+        String expectedMessage = "Rental day count of -1 is invalid. Please have at least one day for tool rental.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.equals(expectedMessage));
+    }
+
+    @Test
+    public void testInvalidParameterExceptions(){
+
+        assertThrows(InvalidParameterException.class, () -> {
+            testToolVendor.checkoutTool(null, "11/7/23", 1, 0);
+        });
+
+        assertThrows(InvalidParameterException.class, () -> {
+            testToolVendor.checkoutTool("JAKR", null, 1, 0);
+        });
+    }
+    
+    @Test
+    public void testChainSawHoliday(){
+        RentalAgreement testAgreement = testToolVendor.checkoutTool("CHNS", "7/3/23", 4, 0);
+
+        assertNotNull(testAgreement);
+
+        String expectedReceipt = "Tool Code: CHNS\n" + //
+                "Tool Type: Chainsaw\n" + //
+                "Tool Brand: Stihl\n" + //
+                "Rental days: 4\n" + //
+                "Checkout date: 07/03/23\n" + //
+                "Due date: 07/07/23\n" + //
+                "Daily rental rate: $1.49\n" + //
+                "Charge days: 4\n" + //
+                "Pre-discount cost: $5.96\n" + //
+                "Discount percent: 0.0%\n" + //
+                "Discount amount: $0.00\n" + //
+                "Final Charge: $5.96";
+        String actualReceipt = testAgreement.toString();
+        assertTrue(actualReceipt.equals(expectedReceipt));
+    }
+    
+    @Test
+    public void testLadderWeekend(){
+        RentalAgreement testAgreement = testToolVendor.checkoutTool("LADW", "5/5/23", 4, 10);
+
+        assertNotNull(testAgreement);
+
+        String expectedReceipt = "Tool Code: LADW\n" + //
+                "Tool Type: Ladder\n" + //
+                "Tool Brand: Werner\n" + //
+                "Rental days: 4\n" + //
+                "Checkout date: 05/05/23\n" + //
+                "Due date: 05/09/23\n" + //
+                "Daily rental rate: $1.99\n" + //
+                "Charge days: 4\n" + //
+                "Pre-discount cost: $7.96\n" + //
+                "Discount percent: 10.0%\n" + //
+                "Discount amount: $0.80\n" + //
+                "Final Charge: $7.16";
+        String actualReceipt = testAgreement.toString();
+        assertTrue(actualReceipt.equals(expectedReceipt));
+    }
+
+    @Test 
+    public void testGenericJackhammer(){
+        RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKD", "6/12/23", 4, 15);
+
+        assertNotNull(testAgreement);
+
+        String expectedReceipt = "Tool Code: JAKD\n" + //
+                "Tool Type: Jackhammer\n" + //
+                "Tool Brand: DeWalt\n" + //
+                "Rental days: 4\n" + //
+                "Checkout date: 06/12/23\n" + //
+                "Due date: 06/16/23\n" + //
+                "Daily rental rate: $2.99\n" + //
+                "Charge days: 4\n" + //
+                "Pre-discount cost: $11.96\n" + //
+                "Discount percent: 15.0%\n" + //
+                "Discount amount: $1.79\n" + //
+                "Final Charge: $10.17";
+        String actualReceipt = testAgreement.toString();
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 }
