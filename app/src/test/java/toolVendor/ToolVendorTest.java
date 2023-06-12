@@ -13,14 +13,31 @@ import java.security.InvalidParameterException;
 import org.junit.jupiter.api.BeforeAll;
 
 class ToolVendorTest {
-    // 
+    // Global testing variables to set up prior to tests 
     private static ToolVendor testToolVendor = null;
+    private static String[] testJuneDateFormatsUSA = {
+        "6/12/23",
+        "06/12/23",
+        "06/12/2023"
+    };
+    private static String[] testSeptemberDateFormatsUSA = {
+        "09/3/15",
+        "9/3/2015"
+    };
 
+    /**
+     * Before all set up script 
+     */
     @BeforeAll 
     public static void setupTest(){
         testToolVendor = new ToolVendor();
     }
 
+    /**
+     * Test 1 for checkout
+     * 
+     * This also acts as a DiscountOutOfBoundsException test
+     */
     @Test 
     public void checkoutTest1(){
         DiscountOutOfBoundsException exception = assertThrows(DiscountOutOfBoundsException.class, () ->{
@@ -32,6 +49,10 @@ class ToolVendorTest {
 
         assertTrue(actualMessage.equals(expectedMessage));
     }
+
+    /**
+     * Test 1 for checkout that's in bounds
+     */
     @Test 
     public void checkoutTest1InBounds(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKR", "9/3/15", 5, 0);
@@ -54,6 +75,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Test 2 for checkout
+     */
     @Test 
     public void checkoutTest2(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("LADW", "7/2/20", 3, 10);
@@ -76,6 +100,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Test 3 for checkout
+     */
     @Test 
     public void checkoutTest3(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("CHNS", "7/2/15", 5, 25);
@@ -98,6 +125,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Test 4 for checkout
+     */
     @Test 
     public void checkoutTest4(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKD", "9/3/15", 6, 0);
@@ -120,6 +150,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Test 5 for checkout
+     */
     @Test 
     public void checkoutTest5(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKR", "7/2/15", 9, 0);
@@ -142,6 +175,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Test 6 for checkout
+     */
     @Test 
     public void checkoutTest6(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKR", "7/2/20", 4, 50);
@@ -164,6 +200,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Test Invalid Rental Day exception
+     */
     @Test
     public void testInvalidRentalDayException() {
         InvalidRentalDayException exception = assertThrows(InvalidRentalDayException.class, () ->{
@@ -176,6 +215,9 @@ class ToolVendorTest {
         assertTrue(actualMessage.equals(expectedMessage));
     }
 
+    /**
+     * Test invalid parameter exception scenarios
+     */
     @Test
     public void testInvalidParameterExceptions(){
 
@@ -188,6 +230,9 @@ class ToolVendorTest {
         });
     }
     
+    /**
+     * Test Chainsaw checkout around 4th of july that's not on a Weekend.
+     */
     @Test
     public void testChainSawFourthOfJulyHoliday(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("CHNS", "7/3/23", 4, 0);
@@ -210,6 +255,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
     
+    /**
+     * Test Ladder checkout on a normal weekend.
+     */
     @Test
     public void testLadderWeekend(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("LADW", "5/5/23", 4, 10);
@@ -232,6 +280,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Checkout a Jackhammer during the work week
+     */
     @Test 
     public void testGenericJackhammer(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKD", "6/12/23", 4, 15);
@@ -254,6 +305,9 @@ class ToolVendorTest {
         assertTrue(actualReceipt.equals(expectedReceipt));
     }
 
+    /**
+     * Checkout a Chainsaw on Labor day
+     */
     @Test
     public void testChainSawLaborDay(){
         RentalAgreement testAgreement = testToolVendor.checkoutTool("CHNS", "9/3/20", 7, 50);
@@ -274,5 +328,55 @@ class ToolVendorTest {
                 "Final Charge: $3.72";
         String actualReceipt = testAgreement.toString();
         assertTrue(actualReceipt.equals(expectedReceipt));
+    }
+
+    /**
+     * Test some checkouts with different USA aligned date formats (i.e. month/day/year)
+     */
+    @Test
+    public void testMultipleDateFormatsUSA(){
+        // For each date in the test date format in June
+        for (String date : testJuneDateFormatsUSA) {
+            RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKD", date, 4, 15);
+
+            assertNotNull(testAgreement);
+
+            String expectedReceipt = "Tool Code: JAKD\n" + //
+                    "Tool Type: Jackhammer\n" + //
+                    "Tool Brand: DeWalt\n" + //
+                    "Rental days: 4\n" + //
+                    "Checkout date: 06/12/23\n" + //
+                    "Due date: 06/16/23\n" + //
+                    "Daily rental rate: $2.99\n" + //
+                    "Charge days: 4\n" + //
+                    "Pre-discount cost: $11.96\n" + //
+                    "Discount percent: 15.0%\n" + //
+                    "Discount amount: $1.79\n" + //
+                    "Final Charge: $10.17";
+            String actualReceipt = testAgreement.toString();
+            assertTrue(actualReceipt.equals(expectedReceipt));
+        }
+    
+        // For each date in test date format in September
+        for (String date : testSeptemberDateFormatsUSA) {
+            RentalAgreement testAgreement = testToolVendor.checkoutTool("JAKR", date, 5, 0);
+
+            assertNotNull(testAgreement);
+
+            String expectedReceipt = "Tool Code: JAKR\n" + //
+                    "Tool Type: Jackhammer\n" + //
+                    "Tool Brand: Ridgid\n" + //
+                    "Rental days: 5\n" + //
+                    "Checkout date: 09/03/15\n" + //
+                    "Due date: 09/08/15\n" + //
+                    "Daily rental rate: $2.99\n" + //
+                    "Charge days: 2\n" + //
+                    "Pre-discount cost: $5.98\n" + //
+                    "Discount percent: 0.0%\n" + //
+                    "Discount amount: $0.00\n" + //
+                    "Final Charge: $5.98";
+            String actualReceipt = testAgreement.toString();
+            assertTrue(actualReceipt.equals(expectedReceipt));
+        }
     }
 }
