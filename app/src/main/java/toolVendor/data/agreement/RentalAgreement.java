@@ -1,7 +1,5 @@
 package toolVendor.data.agreement;
 
-import java.math.BigDecimal;
-
 import toolVendor.data.tool.Tool;
 import toolVendor.util.CalendarUtility;
 
